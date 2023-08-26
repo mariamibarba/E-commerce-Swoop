@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class Swooptestingst {
     WebDriver driver;
 
-     WebDriverWait wait;
+    WebDriverWait wait;
     @BeforeTest
     @Parameters("browser")
     public void startTest(@Optional("chrome") String browser) throws Exception{
@@ -41,10 +41,7 @@ public class Swooptestingst {
     }
     @Test
     public  void testSwoop(){
-
-//         - Navigate to the swoop.ge
-
-//         - Go to 'კინო'
+        //       - Go to 'კინო'
         driver.findElement(By.linkText("კინო")).click();
 
         //        - Select the first movie in the returned list and click on ‘ყიდვა’ button
@@ -68,16 +65,14 @@ public class Swooptestingst {
 
         wait = new WebDriverWait(driver, 10);
         WebElement checkCavea = wait.until((ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"ui-id-6\"]"))));
-        System.out.println(checkCavea.getText());
+
         if (checkCavea.getText().equals("კავეა ისთ ფოინთი")) {
             System.out.println("pased");
         }else{
             System.out.println("failed");
         }
 
-
-
-//        - Click on last date
+        //        - Click on last date
         WebElement daysListElement = driver.findElement(By.xpath("//*[@id=\"384933\"]/div"));
 
         WebElement lastDayList = daysListElement.findElements(By.tagName("li")).get(daysListElement.findElements(By.tagName("li")).size() - 1);
@@ -93,31 +88,26 @@ public class Swooptestingst {
         // ვამოწმებთ ვალიდურობას
 
 
+        String popTitle = driver.findElement(By.className("name")).getText();
+        String popCinemaName = "კავეა ისთ ფოინთი";
+        String poplDateTime = driver.findElement(By.xpath("//p[@class='movie-cinema'][2]")).getText();
+        String actualTitle = driver.findElement(By.xpath("//p[@class='name']")).getText();
+        String actualCinema = eastPoint.getText();
 
-        String popupBoxText = (((JavascriptExecutor) driver).executeScript("return arguments[0].textContent;", new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='content-header']")))).toString());
+        Assert.assertEquals(actualCinema,popCinemaName);
+        Assert.assertEquals(actualTitle,popTitle);
 
 
-        String titleMovie = driver.findElement(By.className("movie-title")).getText();
 
-        String cinemaName = driver.findElement(By.xpath("//p[@class='movie-cinema'][text()='კავეა ისთ ფოინთი']")).getText();
-
-        String dateTime = driver.findElement(By.xpath("//p[@class='movie-cinema'][last()]")).getText();
-
-        Assert.assertTrue(popupBoxText.contains(titleMovie));
-        Assert.assertTrue(popupBoxText.contains(cinemaName));
-        Assert.assertTrue(popupBoxText.contains(dateTime));
-
-//         - Choose any vacant place (Click the first free seat which is anable)
-
+        //         - Choose any vacant place (Click the first free seat which is anable)
 
         List<WebElement> anableSeats = driver.findElements(By.xpath("//div[contains(@class,'seat free')]/div[@class='seat-new-part']"));
         if (anableSeats.get(0).isEnabled()) {
             anableSeats.get(0).click();
-            System.out.println("Selected the first free seat.");
+            System.out.println("აირჩია პირველივე თავისუფალი ადგილი");
         } else {
             driver.findElement(By.xpath("//input[@name='SeatIds[0]']//ancestor-or-self::div[@class='seat-new-part']")).click();
-            System.out.println("No free seats available.");
+            System.out.println("თავისუფალი ადგილი არ არის ხელმისაწვდომი");
         }
 
 
@@ -133,7 +123,6 @@ public class Swooptestingst {
         driver.findElement(By.id("pPhone")).sendKeys("555-55-55-55");
 
         driver.findElement(By.id("pDateBirth")).sendKeys("11", "1", "2002");
-
 
         Select contactPersonGender = new Select(driver.findElement(By.xpath("//select[@name='Gender']")));
         contactPersonGender.selectByVisibleText("ქალი");
