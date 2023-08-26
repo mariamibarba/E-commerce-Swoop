@@ -46,12 +46,14 @@ public class Swooptestingst {
 
         //        - Select the first movie in the returned list and click on ‘ყიდვა’ button
 
-        WebElement movies = driver.findElement(By.xpath("//*[@id=\"body\"]/div[9]"));
-        List<WebElement> moviesList =movies.findElements(By.xpath("//*[@id=\"body\"]/div[9]/div[1]"));
-        WebElement firstMovie = moviesList.get(0);
+        WebElement movies = driver.findElement(By.xpath("//div[@class='movies-deal']"));
+        List<WebElement> moviesList =movies.findElements(By.xpath("//div[@class='movies-deal']"));
+        WebElement firstMovie = moviesList.get(0); //იმ შემთხვევაში თუ პირველ ფილმს არ აქვს ისთ ფოინთი შვცვალოთ ინდექსი
         Actions actions = new Actions(driver);
         actions.moveToElement(firstMovie).perform();
-        driver.findElement(By.xpath("(//p[contains(text(),'ყიდვა')])")).click();
+        WebElement clickButton = firstMovie.findElement(By.className("info-cinema-ticket"));
+        clickButton.click();
+
 
 
         // - Scroll vertically (if necessary), and horizontally and choose ‘კავეა ისთ ფოინთი’
@@ -73,7 +75,7 @@ public class Swooptestingst {
         }
 
         //        - Click on last date
-        WebElement daysListElement = driver.findElement(By.xpath("//*[@id=\"384933\"]/div"));
+        WebElement daysListElement = driver.findElement(By.xpath("//div[@id='384933']//div[@class='calendar-tabs ui-tabs ui-widget ui-widget-content ui-corner-all']"));
 
         WebElement lastDayList = daysListElement.findElements(By.tagName("li")).get(daysListElement.findElements(By.tagName("li")).size() - 1);
         lastDayList.click();
@@ -85,7 +87,7 @@ public class Swooptestingst {
         lastSession.click();
 
 //           - Check in opened popup that movie name, cinema and datetime is valid
-        // ვამოწმებთ ვალიდურობას
+//         ვამოწმებთ ვალიდურობას
 
 
         String popTitle = driver.findElement(By.className("name")).getText();
